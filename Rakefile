@@ -1,0 +1,1 @@
+task :defaul => [:spec, :test]
