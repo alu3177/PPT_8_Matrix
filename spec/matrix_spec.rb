@@ -2,6 +2,7 @@
 @require 'fraction'
 
 describe Matrix do
+
   before all: do
     # Creamos las matrices para hacer las comprobaciones
     @im = IntegerMatrix(3,3)

@@ -10,7 +10,7 @@ class Matrix
   def [](i,j)
     @array[i][j]
   end
- 
+
   def []=(i,j,value)
     @array[i][j] = value
   end
@@ -26,7 +26,7 @@ class Matrix
   end
 
   def zero
-    raise "Debe definir un valor zero"
+    raise "Debe definir un valor zero."
   end
 
 end
