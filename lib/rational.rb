@@ -4,7 +4,7 @@ class RationalNumber
     def initialize(numerador, denominador)
         @num = numerador
         @denom = denominador
-        reduce  # Simplificamos
+        reduce  # Simplificamos 
     end
 
     def num

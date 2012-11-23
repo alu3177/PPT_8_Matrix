@@ -1,9 +1,9 @@
-@require 'matrix'
-@require 'fraction'
+require 'matrix'
+require 'rational'
 
 describe Matrix do
 
-  before all: do
+  before :all do
     # Creamos las matrices para hacer las comprobaciones
     @im = IntegerMatrix(3,3)
     for i in 0..@im.numberOfRows
@@ -12,5 +12,5 @@ describe Matrix do
       end
     end
   end
-
+  
 end
