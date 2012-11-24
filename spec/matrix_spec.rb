@@ -38,7 +38,7 @@ describe Matrix do
 	end
 
 	it "Se debe poder sumar dos matrices de enteros" do
-		(@m_int + @m_sum_int) == @m_int # Falla al poner (@m_int + @m_sum_int).should   ...
+		(@m_int + @m_sum_int).should == @m_int # Falla al poner (@m_int + @m_sum_int).should   ...
 	end
   
 end
