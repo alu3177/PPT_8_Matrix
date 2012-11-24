@@ -5,6 +5,7 @@ describe RationalNumber do
     let (:numerador) { 6 }
     let (:denominador) { 4 }
     let (:reducida) {[3, 2]} # Array con el numerador y el denominador reducidos
+    let (:number) { 5 }
 
     before :all do
         @rat = RationalNumber.new(numerador, denominador)
@@ -117,6 +118,30 @@ describe RationalNumber do
     it "Se debe de poder comprobar si una fracion es mayor o igual que otra" do
         rat2 = RationalNumber.new(0, 1)
         (@rat >= rat2).should == true
+    end
+
+    it "Se debe poder multiplicar un RationalNumber con un entero" do
+        (@rat * number).should == RationalNumber.new(numerador * number, denominador)
+    end
+
+    it "Se debe poder dividir un RationalNumber con un entero" do
+        (@rat / number).should == RationalNumber.new(numerador, denominador * number)
+    end
+
+    it "Se debe poder sumar un RationalNumber con un entero" do
+        (@rat + number).should == RationalNumber.new(numerador + (number * denominador), denominador)
+    end
+
+    it "Se debe poder multiplicar un entero con un RationalNumber" do
+        (number * @rat).should == RationalNumber.new(numerador * number, denominador)
+    end
+
+    it "Se debe poder dividir un entero con un RationalNumber" do
+        (number / @rat).should == RationalNumber.new(denominador * number, numerador)
+    end
+
+    it "Se debe poder sumar un entero con un RationalNumber" do
+        (number + @rat).should == RationalNumber.new(numerador + (number * denominador), denominador)
     end
 
 end

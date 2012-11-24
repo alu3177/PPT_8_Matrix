@@ -1,18 +1,12 @@
 class RationalNumber
+    attr_reader :num, :denom
     include Comparable
 
     def initialize(numerador, denominador)
+        raise ZeroDivisionError, 'Denominator can\'t be zero \'0\'' unless denominador != 0
         @num = numerador
         @denom = denominador
-        reduce  # Simplificamos 
-    end
-
-    def num
-        @num
-    end
-
-    def denom
-        @denom
+        reduce  # Simplificamos
     end
 
     # Se encarga de simplificar la fraccion al minimo
@@ -24,13 +18,8 @@ class RationalNumber
     end
 
     # Calcula el Máximo como un divisor del numero actual (Algoritmo de Euclides)
-    def mcd other=nil
-        r = []
-        if (other.respond_to? :denom)
-            r = [other.denom, @denom]
-        else
-            r = [@num, @denom]
-        end
+    def mcd
+        r = [@num, @denom]
         i = 1
         while r[i] != 0 do
             r[i+1] = r[i-1] % r[i]
@@ -39,26 +28,12 @@ class RationalNumber
         return r[i-1]
     end
 
-    # Calcula el minimo comun multiplo respecto otro Rational
-    def mcm other
-        (other.denom * @denom)/mcd(other)
-    end
-
-
     def to_s
         "#{@num}/#{@denom}"
     end
 
     def to_f
         @num / @denom
-    end
-
-    def == (r)
-        if r.kind_of? RationalNumber
-            return ( (r.num == self.num) and (r.denom == self.denom) )
-        else
-            return false
-        end
     end
 
     def abs
@@ -74,7 +49,7 @@ class RationalNumber
         else
             denomi = @denom
         end
-        RationalNumber.new(nume, denomi)  # Devolvemos el numero racional en sí
+        RationalNumber.new(nume, denomi)
     end
 
     def reciprocal
@@ -89,34 +64,47 @@ class RationalNumber
         if ((other.respond_to? :num) and (other.respond_to? :denom))
             new_num = self.num * other.denom + other.num * self.denom
             new_denom = self.denom * other.denom
-            result = RationalNumber.new(new_num, new_denom)
-            return result.reduce
+            RationalNumber.new(new_num, new_denom)
+        elsif other.is_a? Integer
+            self + RationalNumber.new(other, 1)
+        else
+            raise TypeError, "Can't add #{self.class} and #{other.class}"
         end
     end
 
     def - other
-        if ((other.respond_to? :num) and (other.respond_to? :denom))
-            return self + (-other)
-        end
+        return self + (-other)
     end
 
     def * other
         if ((other.respond_to? :num) and (other.respond_to? :denom))
             RationalNumber.new(self.num * other.num, self.denom * other.denom)
+        elsif other.is_a? Integer
+            RationalNumber.new(self.num * other, self.denom)
+        else
+            raise TypeError, "Can't multiply #{self.class} and #{other.class}"
         end
     end
 
     def / other
         if ((other.respond_to? :num) and (other.respond_to? :denom))
             RationalNumber.new(self.num * other.denom, self.denom * other.num)
+        elsif other.is_a? Integer
+            RationalNumber.new(self.num, self.denom * other)
+        else
+            raise TypeError, "Can't divide #{self.class} and #{other.class}"
         end
     end
 
     def % other
         if ((other.respond_to? :num) and (other.respond_to? :denom))
             if (((other.denom) and (other.num)) != 0)
-                RationalNumber.new(self.num % other.denom, self.denom % other.num)
+                return RationalNumber.new(self.num % other.denom, self.denom % other.num)
+            else
+                raise ZeroDivisionError, 'Denominator can\'t be zero \'0\''
             end
+        else
+            raise TypeError, "Can't calculate module between #{self.class} and #{other.class}"
         end
     end
 
@@ -127,6 +115,15 @@ class RationalNumber
             return 0
         elsif self.to_f > other.to_f
             return 1
+        end
+    end
+
+    def coerce other
+        case other
+        when Integer
+            return RationalNumber.new(other, 1), self
+        else
+            raise TypeError, "#{self.class} can't be coerced into #{other.class}"
         end
     end
             

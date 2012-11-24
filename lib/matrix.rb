@@ -1,16 +1,16 @@
 class Matrix
-  attr_reader :numberOfRows, :numberOfColumns
+  attr_reader :numberOfRows, :numberOfCollumns
 
   def initialize(nRows, nCols)
-    raise IndexError if nRows <= 0 and nCols <= 0
+    raise IndexError if nRows <= 0 or nCols <= 0
     @numberOfRows = nRows
-    @numberOfColumns = nCols
+    @numberOfCollumns = nCols
     @matrix = Array.new(nRows) { Array.new(nCols) }
   end
 
   def to_s
     for i in 0...@numberOfRows
-      for j in 0...@numberOfColumns
+      for j in 0...@numberOfCollumns
         print "#{self[i,j]} "
       end
       puts
@@ -25,16 +25,34 @@ class Matrix
     @matrix[i][j] = value
   end
 
-  def + mat
-  end
-
-  def * mat
-    raise IndexError unless @numberOfColumns = mat.numberOfRows
-    result = Matrix.new(@numberOfRows, mat.numberOfColumns)
+  def + other
+    raise IndexError unless (@numberOfCollumns == @numberOfRows) == (other.numberOfCollumns == other.numberOfRows)
+    result = Matrix.new(@numberOfRows, @numberOfCollumns)
     for i in 0...@numberOfRows
-      for j in 0...mat.numberOfColumns
+      for j in 0...@numberOfCollumns
+        result[i,j] = self[i,j] + other[i,j]
       end
     end
+    return result
+  end
+
+  def * other
+    raise IndexError unless @numberOfCollumns = mat.numberOfRows
+    result = Matrix.new(@numberOfRows, mat.numberOfCollumns)
+    for i in 0...@numberOfRows
+      for j in 0...mat.numberOfCollumns
+      end
+    end
+  end
+
+  def == other
+    return false unless (@numberOfRows == other.numberOfRows) and (@numberOfCollumns == other.numberOfCollumns)
+    for i in 0...@numberOfRows
+      for j in 0...@numberOfCollumns
+          return false unless (self[i,j] != other[i,j])
+      end
+    end
+    return true
   end
 
   def zero
@@ -49,7 +67,7 @@ class RationalMatrix < Matrix
   def initialize(nRows, nCols)
     super
     for i in 0...@numberOfRows
-      for j in 0...@numberOfColumns
+      for j in 0...@numberOfCollumns
         self[i,j] = RationalNumber.new(Random::rand(0..9), Random::rand(1..9)) # 0 a 9 de momento para facilitar la lectura al imprimir la matriz
       end
     end
@@ -64,7 +82,7 @@ class IntegerMatrix < Matrix
   def initialize(nRows, nCols)
     super
     for i in 0...@numberOfRows
-      for j in 0...@numberOfColumns
+      for j in 0...@numberOfCollumns
         self[i,j] = Random::rand(0..9) # 0 a 9 de momento para facilitar la lectura al imprimir la matriz
       end
     end
