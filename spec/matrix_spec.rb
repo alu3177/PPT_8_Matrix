@@ -4,41 +4,41 @@ require 'rational'
 describe Matrix do
 
 	let (:filas) { 5 }
-	let (:columnas) { 5 }
+	let (:columnas) { filas }
 	before :all do
     	# Creamos las matrices para hacer las comprobaciones
     	@m_int = IntegerMatrix.new(filas, columnas)
     	@m_rat = RationalMatrix.new(filas, columnas)
 
-	    @m_mul_int = IntegerMatrix.new(filas, columnas) # Matriz identidad de la multiplicacion de matrices de enteros
-	    for i in 0...@m_mul_int.numberOfRows
-	      for j in 0...@m_mul_int.numberOfCollumns
-	        @m_mul_int[i,j] = 1
-	      end
-	    end
-	    @m_sum_int = IntegerMatrix.new(filas, columnas) # Matriz identidad de la suma de matrices de enteros
-	    for i in 0...@m_sum_int.numberOfRows
-	      for j in 0...@m_sum_int.numberOfCollumns
-	        @m_sum_int[i,j] = 0
-	      end
-	    end
+    	@m_int_sum = IntegerMatrix::empty_matrix(filas) # Matriz vacía (No modficia la suma)
+    	@m_int_mul = IntegerMatrix::identity(filas)     # Matriz identidad (No modifica el producto)
 
-	    @m_mul_rat = RationalMatrix.new(filas, columnas) # Matriz identidad de la multiplicacion de matrices de racionales
-	    for i in 0...@m_mul_rat.numberOfRows
-	      for j in 0...@m_mul_rat.numberOfCollumns
-	        @m_mul_rat[i,j] = RationalNumber.new(1,1)
-	      end
-	    end
-	    @m_sum_rat = RationalMatrix.new(filas, columnas) # Matriz identidad de la suma de matrices de racionales
-	    for i in 0...@m_sum_rat.numberOfRows
-	      for j in 0...@m_sum_rat.numberOfCollumns
-	        @m_sum_rat[i,j] = RationalNumber.new(0,1)
-	      end
-	    end
+	    @m_rat_sum = RationalMatrix::empty_matrix(filas)# Matriz vacía (No modficia la suma)
+	    @m_rat_mul = RationalMatrix::identity(filas)	# Matriz identidad (No modifica el producto)
 	end
 
 	it "Se debe poder sumar dos matrices de enteros" do
-		(@m_int + @m_sum_int).should == @m_int # Falla al poner (@m_int + @m_sum_int).should   ...
+		(@m_int + @m_int_sum).should == @m_int
+	end
+
+	it "Se debe poder multiplicar dos matrices de enteros" do
+		(@m_int * @m_int_mul).should == @m_int
+	end
+
+	it "Se debe poder sumar dos matrices de racionales" do
+		(@m_rat + @m_rat_sum).should == @m_rat
+	end
+
+	it "Se debe poder multiplicar dos matrices de racionales" do
+		(@m_rat * @m_rat_mul).should == @m_rat
+	end
+
+	it "Se debe poder sumar dos matrices, una de enteros y otra de racionales" do
+		(@m_rat + @m_int_sum).should == @m_rat
+	end
+
+	it "Se debe poder multiplicar dos matrices, una de enteros y otra de racionales" do
+		(@m_rat * @m_int_mul).should == @m_rat
 	end
   
 end

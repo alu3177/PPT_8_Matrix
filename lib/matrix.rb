@@ -39,14 +39,21 @@ class Matrix
   def * other
     raise IndexError unless @numberOfCollumns = other.numberOfRows
     result = Matrix.new(@numberOfRows, other.numberOfCollumns)
-    for i in 0...@numberOfRows
-      for j in 0...other.numberOfCollumns
+    for i in 0...other.numberOfRows
+      for j in 0...@numberOfCollumns
+        sum = self[i,0] * other[0,j]
+        for k in 1...@numberOfCollumns
+          sum += self[i,k] * other[k,j]
+        end
+        result[i,j] = sum
       end
     end
+    return result
   end
 
   def == other
     #return false unless (@numberOfRows == other.numberOfRows) and (@numberOfCollumns == other.numberOfCollumns)
+    raise TypeError unless (other.respond_to? :numberOfRows) and (other.respond_to? :numberOfCollumns)
     return false unless [@numberOfRows, @numberOfCollumns] == [other.numberOfRows, other.numberOfCollumns]
     for i in 0...@numberOfRows
       for j in 0...@numberOfCollumns
@@ -56,8 +63,12 @@ class Matrix
     true
   end
 
-  def zero
-    raise "Debe definir un valor 'zero'."
+  def self.identity size=3 # Por defecto matriz identidad de tamaño 3
+    raise "Debe definir una matriz identidad"
+  end
+
+  def self.empty_matrix size=3
+    raise "Debe definir una matriz vacia"
   end
 
 end
@@ -74,9 +85,30 @@ class RationalMatrix < Matrix
     end
   end
 
-  def zero
-    Fraction.new(0,1)
+  def self.identity size=3
+    sol = RationalMatrix.new(size, size)
+    for i in 0...size
+      for j in 0...size
+        if i == j
+          sol[i,j] = RationalNumber.new(1,1)
+        else
+          sol[i,j] = RationalNumber.new(0,1)
+        end
+      end
+    end
+    return sol
   end
+
+  def self.empty_matrix size=3
+    sol = RationalMatrix.new(size, size)
+    for i in 0...size
+      for j in 0...size
+        sol[i,j] = RationalNumber.new(0,1)
+      end
+    end
+    return sol
+  end
+
 end
 
 class IntegerMatrix < Matrix
@@ -89,7 +121,28 @@ class IntegerMatrix < Matrix
     end
   end
 
-  def zero
-    0
+  def self.identity size=3
+    sol = IntegerMatrix.new(size, size)
+    for i in 0...size
+      for j in 0...size
+        if i == j
+          sol[i,j] = 1
+        else
+          sol[i,j] = 0
+        end
+      end
+    end
+    return sol
   end
+
+  def self.empty_matrix size=3
+    sol = IntegerMatrix.new(size, size)
+    for i in 0...size
+      for j in 0...size
+        sol[i,j] = 0
+      end
+    end
+    return sol
+  end
+
 end
