@@ -7,3 +7,5 @@ puts m
 mi = m + m
 puts mi
 puts mi + m
+puts m == m
+puts m == mi

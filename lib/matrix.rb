@@ -37,22 +37,23 @@ class Matrix
   end
 
   def * other
-    raise IndexError unless @numberOfCollumns = mat.numberOfRows
-    result = Matrix.new(@numberOfRows, mat.numberOfCollumns)
+    raise IndexError unless @numberOfCollumns = other.numberOfRows
+    result = Matrix.new(@numberOfRows, other.numberOfCollumns)
     for i in 0...@numberOfRows
-      for j in 0...mat.numberOfCollumns
+      for j in 0...other.numberOfCollumns
       end
     end
   end
 
   def == other
-    return false unless (@numberOfRows == other.numberOfRows) and (@numberOfCollumns == other.numberOfCollumns)
+    #return false unless (@numberOfRows == other.numberOfRows) and (@numberOfCollumns == other.numberOfCollumns)
+    return false unless [@numberOfRows, @numberOfCollumns] == [other.numberOfRows, other.numberOfCollumns]
     for i in 0...@numberOfRows
       for j in 0...@numberOfCollumns
-          return false unless (self[i,j] != other[i,j])
+          return false unless (self[i,j] == other[i,j])
       end
     end
-    return true
+    true
   end
 
   def zero
