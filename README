@@ -1,3 +1,4 @@
+(Práctica Finalizada)
 Considere el desarrollo de una clase Ruby para representar Matrices. 
 1.- Cree una clase para representar Matrices usando Desarrollo Dirigido por el Comportamiento (Behavior Driven Development - BDD) como caso particular del Desarrollo dirigido por pruebas (Test Driven Development - TDD) usando como herramienta Rspec. 
 Puede tomar como ejemplo la siguiente salida:
